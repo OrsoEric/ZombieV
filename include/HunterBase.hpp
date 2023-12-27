@@ -9,59 +9,68 @@
 #include "Weapons/Weapons.hpp"
 #include "LightEngine/LightEngine.hpp"
 
+#include "System/key_binding.hpp"
+
 class HunterBase : public WorldEntity, public LifeForm
 {
-public:
-    enum HunterState
-    {
-        IDLE,
-        MOVING,
-        SHOOTING,
-        RELOADING
-    };
+    public:
+        enum HunterState
+        {
+            IDLE,
+            MOVING,
+            SHOOTING,
+            RELOADING
+        };
 
-    HunterBase();
-    HunterBase(float x, float y);
+        HunterBase();
+        HunterBase(float x, float y);
 
-    void update(GameWorld& world);
-    void initPhysics(GameWorld* world);
-    void render();
+        void update(GameWorld& world);
+        void initPhysics(GameWorld* world);
+        void render();
 
-    HunterState getCurrentState() const {return _state;}
-    bool isDone() const {return _life<=0;}
+        HunterState getCurrentState() const {return _state;}
+        bool isDone() const {return _life<=0;}
 
-    void hit(WorldEntity* entity, GameWorld* gameWorld);
+        void hit(WorldEntity* entity, GameWorld* gameWorld);
 
-	int32_t getLife() const {return static_cast<int32_t>(_life);}
+        int32_t getLife() const {return static_cast<int32_t>(_life);}
 
-    static void init();
+        static void init();
 
-protected:
-    std::vector<Weapon*> _weapons;
+        bool init_bindings();
 
-    Weapon*     _currentWeapon;
-    int         _weaponRank;
-    bool        _releasedWeaponSwap;
-    bool        _clicking;
-    float       _stamina;
-    float       _angleTarget;
-    HunterState _state;
-    HunterState _lastState;
-    Cooldown    _stepCooldown;
+    protected:
+        std::vector<Weapon*> _weapons;
 
-    sf::VertexArray _vertexArray;
+        Weapon*     _currentWeapon;
+        int         _weaponRank;
+        bool        _releasedWeaponSwap;
+        bool        _clicking;
+        float       _stamina;
+        float       _angleTarget;
+        HunterState _state;
+        HunterState _lastState;
+        Cooldown    _stepCooldown;
 
-    Light* _shootLight;
-    Light* _flashlight;
-    Light* _littleLight;
+        sf::VertexArray _vertexArray;
 
-    float            _feetTime;
-    static Animation _feetAnimation;
-    static uint64_t    _feetTextureID;
-    static std::vector<uint64_t> _stepSounds;
+        Light* _shootLight;
+        Light* _flashlight;
+        Light* _littleLight;
 
-    void _changeState(HunterState state);
-    void _changeAnimation(Animation& anim, bool wait=true);
+        float            _feetTime;
+        static Animation _feetAnimation;
+        static uint64_t    _feetTextureID;
+        static std::vector<uint64_t> _stepSounds;
+
+        void _changeState(HunterState state);
+        void _changeAnimation(Animation& anim, bool wait=true);
+
+        Key_binding gcl_key_bindings;
+
+    private:
+
 };
 
 #endif // HUNTERBASE_HPP_INCLUDED

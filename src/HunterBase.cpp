@@ -53,6 +53,9 @@ HunterBase::HunterBase(float x, float y) :
     light.radius  = 50;
     light.width = 360;
     _littleLight = GameRender::getLightEngine().addDurableLight(light);*/
+
+    //Assign default key bindings to the events associated with this entity
+    this->init_bindings();
 }
 
 void HunterBase::init()
@@ -67,7 +70,18 @@ void HunterBase::init()
     _stepSounds[2] = SoundPlayer::registerSound("data/Sounds/step3.wav");
     _stepSounds[3] = SoundPlayer::registerSound("data/Sounds/step4.wav");
     _stepSounds[4] = SoundPlayer::registerSound("data/Sounds/step5.wav");
-    //
+
+}
+
+bool HunterBase::init_bindings()
+{
+    //Key bindings for events
+    this->gcl_key_bindings.add_key_event( "forward", sf::Keyboard::W );
+    this->gcl_key_bindings.add_key_event( "backward", sf::Keyboard::S );
+    this->gcl_key_bindings.add_key_event( "right", sf::Keyboard::D );
+    this->gcl_key_bindings.add_key_event( "left", sf::Keyboard::A );
+
+    return false;
 }
 
 void HunterBase::update(GameWorld& world)

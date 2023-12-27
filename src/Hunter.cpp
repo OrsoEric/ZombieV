@@ -36,7 +36,7 @@ Hunter::Hunter(float x, float y) :
     _littleLight = GameRender::getLightEngine().addDurableLight(little_light);
 }
 
-void Hunter::updateControls(const EventManager& em)
+void Hunter::updateControls(const EventManager& icl_em)
 {
     float COS45 = 0.707106f;
 
@@ -45,17 +45,17 @@ void Hunter::updateControls(const EventManager& em)
 
     float norm = 1.0f;
 
-    if (em.isKeyPressed(sf::Keyboard::Z))
+    if (icl_em.isKeyPressed(this->gcl_key_bindings.get_event_key("forward")))
         vy = -1;
-    else if (em.isKeyPressed(sf::Keyboard::S))
+    else if (icl_em.isKeyPressed(this->gcl_key_bindings.get_event_key("backward")))
         vy = 1;
-    if (em.isKeyPressed(sf::Keyboard::Q))
+    if (icl_em.isKeyPressed(this->gcl_key_bindings.get_event_key("left")))
         vx = -1;
-    else if (em.isKeyPressed(sf::Keyboard::D))
+    else if (icl_em.isKeyPressed(this->gcl_key_bindings.get_event_key("right")))
         vx = 1;
     norm = vx && vy ? COS45 : 1.0f;
 
-    if (em.isKeyPressed(sf::Keyboard::A))
+    if (icl_em.isKeyPressed(sf::Keyboard::A))
     {
         if (_releasedWeaponSwap)
         {
@@ -79,14 +79,14 @@ void Hunter::updateControls(const EventManager& em)
 
     move(vx*norm*_speed, vy*norm*_speed);
 
-    sf::Vector2i mousePos = em.getMousePosition();
+    sf::Vector2i mousePos = icl_em.getMousePosition();
     _angle = getAngleFromVec(mousePos);
 
-    _clicking = em.isLeftMousePressed();
+    _clicking = icl_em.isLeftMousePressed();
     if (!_clicking)
         _currentWeapon->releaseTrigger();
 
-    if (em.isKeyPressed(sf::Keyboard::R) && _currentWeapon->canReload())
+    if (icl_em.isKeyPressed(sf::Keyboard::R) && _currentWeapon->canReload())
     {
         _changeAnimation(_currentWeapon->getReloadAnimation(), false);
         _changeState(HunterState::RELOADING);
